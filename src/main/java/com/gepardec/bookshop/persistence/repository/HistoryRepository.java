@@ -20,13 +20,15 @@ public class HistoryRepository {
     @Inject
     EntityManager em;
 
-    public List<Book> getBookHistory(Long bookId) {
-        AuditReader auditReader = AuditReaderFactory.get(em);
+    private AuditReader auditReader() {
+        return AuditReaderFactory.get(em);
+    }
 
-        List<Number> revs = auditReader.getRevisions(Book.class, bookId);
+    public List<Book> getBookHistory(Long bookId) {
+        List<Number> revs = auditReader().getRevisions(Book.class, bookId);
 
         return revs.stream()
-                .map(rev -> auditReader.find(Book.class, bookId, rev))
+                .map(rev -> auditReader().find(Book.class, bookId, rev))
                 .toList();
     }
 
@@ -41,9 +43,9 @@ public class HistoryRepository {
     }
 
     public List<AuthorRevisionDto> getAuthorHistoryFull(Long authorId) {
-        AuditReader auditReader = AuditReaderFactory.get(em);
 
-        List<Object[]> rows = auditReader.createQuery()
+
+        List<Object[]> rows = auditReader().createQuery()
                 .forRevisionsOfEntity(Author.class, false, true)
                 .add(AuditEntity.id().eq(authorId))
                 .addOrder(AuditEntity.revisionNumber().asc())
@@ -65,5 +67,13 @@ public class HistoryRepository {
                     );
                 })
                 .toList();
+    }
+
+    public List<Author> findAuthorRevisionsByUser(String username) {
+        return auditReader()
+                .createQuery()
+                .forRevisionsOfEntity(Author.class, false, true)
+                .add(AuditEntity.revisionProperty("username").eq(username))
+                .getResultList();
     }
 }

@@ -43,5 +43,9 @@ public class HistoryResource {
         return historyRepository.getAuthorHistoryFull(authorId);
     }
 
-
+    @GET
+    @Path("author/{username}")
+    public List<Author> getAuthorHistoryByUsername(@PathParam("username") String username) {
+        return historyRepository.findAuthorRevisionsByUser(username);
+    }
 }
