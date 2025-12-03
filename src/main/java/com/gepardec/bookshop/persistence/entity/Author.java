@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import org.hibernate.envers.AuditMappedBy;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -28,7 +27,6 @@ public class Author {
     private String email;
 
     @OneToMany(mappedBy = "author")
-    @AuditMappedBy(mappedBy = "author")
     private List<Book> books;
 
     @Column(name = "internal_notes")

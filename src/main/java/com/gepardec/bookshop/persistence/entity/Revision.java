@@ -1,5 +1,6 @@
 package com.gepardec.bookshop.persistence.entity;
 
+//import com.gepardec.bookshop.persistence.listener.UserRevisionListener;
 import com.gepardec.bookshop.persistence.listener.UserRevisionListener;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

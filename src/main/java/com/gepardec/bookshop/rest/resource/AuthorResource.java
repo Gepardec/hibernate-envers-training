@@ -41,7 +41,6 @@ public class AuthorResource {
     }
 
     @POST
-    @Transactional
     public Response create(Author author) {
         authorRepo.create(author);
         return Response.created(URI.create("/authors/" + author.getId()))
