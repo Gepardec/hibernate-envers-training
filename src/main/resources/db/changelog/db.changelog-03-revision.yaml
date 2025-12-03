@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 03
+      author: gepardec
+      changes:
+        - createTable:
+            tableName: REVISION
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: timestamp
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(256)
+        - createSequence:
+            sequenceName: revision_seq
+            startValue: 1
+            incrementBy: 50
+            cacheSize: 50

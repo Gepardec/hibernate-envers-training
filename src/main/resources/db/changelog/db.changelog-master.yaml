@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/db.changelog-01-author.yaml
+  - include:
+      file: db/changelog/db.changelog-02-book.yaml
+  - include:
+      file: db/changelog/db.changelog-03-revision.yaml
+  - include:
+      file: db/changelog/db.changelog-04-author-aud.yaml
+  - include:
+      file: db/changelog/db.changelog-05-book-aud.yaml

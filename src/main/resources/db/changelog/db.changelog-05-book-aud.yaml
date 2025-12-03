@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 05
+      author: gepardec
+      changes:
+        - createTable:
+            tableName: book_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: revision
+                  type: int
+                  constraints:
+                    referencedTableName: REVISION
+                    foreignKeyName: FK_AUTHOR_AUD_REVISION
+                    referencedColumnNames: id
+                    nullable: false
+              - column:
+                  name: REVTYPE
+                  type: SMALLINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: isbn
+                  type: VARCHAR(255)
+              - column:
+                  name: publication_year
+                  type: INT
+              - column:
+                  name: author_id
+                  type: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: book_aud
+            baseColumnNames: revision
+            constraintName: fk_book_aud_revinfo
+            referencedTableName: REVISION
+            referencedColumnNames: id

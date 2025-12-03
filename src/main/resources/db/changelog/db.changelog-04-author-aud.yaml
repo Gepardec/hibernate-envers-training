@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 04
+      author: gepardec
+      changes:
+        # Author audit table
+        - createTable:
+            tableName: author_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: revision
+                  type: int
+                  constraints:
+                    referencedTableName: REVISION
+                    foreignKeyName: FK_AUTHOR_AUD_REVISION
+                    referencedColumnNames: id
+                    nullable: false
+              - column:
+                  name: REVTYPE
+                  type: SMALLINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: internal_notes
+                  type: VARCHAR(255)
+
+        - addForeignKeyConstraint:
+            baseTableName: author_aud
+            baseColumnNames: revision
+            constraintName: fk_author_aud_revinfo
+            referencedTableName: REVISION
+            referencedColumnNames: id

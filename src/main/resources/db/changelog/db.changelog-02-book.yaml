@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02
+      author: gepardec
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_book
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: isbn
+                  type: VARCHAR(255)
+              - column:
+                  name: publication_year
+                  type: INT
+              - column:
+                  name: author_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: book
+            baseColumnNames: author_id
+            constraintName: fk_book_author
+            referencedTableName: author
+            referencedColumnNames: id
+        - createIndex:
+            tableName: book
+            indexName: idx_book_title
+            columns:
+              - column:
+                  name: title
+        - createIndex:
+            tableName: book
+            indexName: idx_book_author_id
+            columns:
+              - column:
+                  name: author_id

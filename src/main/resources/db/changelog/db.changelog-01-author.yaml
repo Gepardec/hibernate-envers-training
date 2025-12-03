@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01
+      author: gepardec
+      changes:
+        - createTable:
+            tableName: author
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_author
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: internal_notes
+                  type: VARCHAR(255)
+        - createIndex:
+            tableName: author
+            indexName: idx_author_name
+            columns:
+              - column:
+                  name: name
