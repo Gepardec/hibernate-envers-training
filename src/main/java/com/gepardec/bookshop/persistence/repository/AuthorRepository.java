@@ -1,6 +1,7 @@
 package com.gepardec.bookshop.persistence.repository;
 
 import com.gepardec.bookshop.persistence.entity.Author;
+import com.gepardec.bookshop.persistence.entity.Book;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -27,5 +28,13 @@ public class AuthorRepository {
     public List<Author> findAll() {
         return em.createQuery("select a from Author a", Author.class)
                 .getResultList();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+        }
     }
 }

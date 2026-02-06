@@ -11,7 +11,11 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
+import org.hibernate.envers.query.AuditQuery;
+import org.hibernate.envers.query.criteria.MatchMode;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -43,8 +47,6 @@ public class HistoryRepository {
     }
 
     public List<AuthorRevisionDto> getAuthorHistoryFull(Long authorId) {
-
-
         List<Object[]> rows = auditReader().createQuery()
                 .forRevisionsOfEntity(Author.class, false, true)
                 .add(AuditEntity.id().eq(authorId))
@@ -69,11 +71,65 @@ public class HistoryRepository {
                 .toList();
     }
 
-    public List<Author> findAuthorRevisionsByUser(String username) {
-        return auditReader()
+    public List<AuthorRevisionDto> findAuthorRevisionsByUser(String username) {
+        List<Object[]> results = auditReader()
                 .createQuery()
-                .forRevisionsOfEntity(Author.class, false, true)
+                .forRevisionsOfEntity(Author.class, false, false)
                 .add(AuditEntity.revisionProperty("username").eq(username))
                 .getResultList();
+
+        List<AuthorRevisionDto> revisions = new ArrayList<>();
+        for (Object[] row : results) {
+            Author author = (Author) row[0];
+            Revision rev = (Revision) row[1];
+            RevisionType type = (RevisionType) row[2];
+            revisions.add(new AuthorRevisionDto(
+                    author.getId(),
+                    author.getName(),
+                    rev.getId(),
+                    rev.getTimestamp(),
+                    rev.getUsername(),
+                    type
+            ));
+        }
+
+        return revisions;
+    }
+
+    public List<Book> getBookEntriesByIdAndRevType(long bookId, RevisionType revType) {
+        return auditReader()
+                .createQuery().forRevisionsOfEntity(Book.class, true, true)
+                .add(AuditEntity.property("id").eq(bookId))
+                .add(AuditEntity.revisionType().eq(revType))
+                .getResultList();
+    }
+
+    public List<Book> getBookByTimestamp(Instant timestamp) {
+        Number revision = auditReader().getRevisionNumberForDate(timestamp);
+        return auditReader().createQuery().forEntitiesAtRevision(Book.class, revision).getResultList();
+    }
+
+    public List<AuthorRevisionDto> findAuthorRevisionsByName(String authorName) {
+        AuditQuery query = auditReader().createQuery().forRevisionsOfEntity(Author.class, false, true);
+        List<Object[]> rows = query.add(AuditEntity.property("name").ilike(authorName, MatchMode.ANYWHERE))
+                .addOrder(AuditEntity.revisionType().desc())
+                .getResultList();
+
+        return rows.stream()
+                .map(row -> {
+                    Author author = (Author) row[0];
+                    Revision rev = (Revision) row[1];
+                    RevisionType revType = (RevisionType) row[2];
+
+                    return new AuthorRevisionDto(
+                            author.getId(),
+                            author.getName(),
+                            rev.getId(),
+                            rev.getTimestamp(),
+                            rev.getUsername(),
+                            revType
+                    );
+                })
+                .toList();
     }
 }

@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/db.changelog-04-author-aud.yaml
   - include:
       file: db/changelog/db.changelog-05-book-aud.yaml
+  - include:
+      file: db/changelog/db.changelog-06-revision-username.yaml

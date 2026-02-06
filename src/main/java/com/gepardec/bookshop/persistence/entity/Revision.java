@@ -1,10 +1,12 @@
 package com.gepardec.bookshop.persistence.entity;
 
 //import com.gepardec.bookshop.persistence.listener.UserRevisionListener;
+//import com.gepardec.bookshop.persistence.listener.UserRevisionListener;
 import com.gepardec.bookshop.persistence.listener.UserRevisionListener;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.hibernate.envers.RevisionEntity;
+import org.hibernate.envers.RevisionListener;
 import org.hibernate.envers.RevisionMapping;
 
 import java.util.Objects;

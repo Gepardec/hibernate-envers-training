@@ -5,6 +5,7 @@ import com.gepardec.bookshop.persistence.repository.AuthorRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
@@ -46,5 +47,12 @@ public class AuthorResource {
         return Response.created(URI.create("/authors/" + author.getId()))
                 .entity(author)
                 .build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Transactional
+    public void delete(@PathParam("id") Long id) {
+        authorRepo.delete(id);
     }
 }

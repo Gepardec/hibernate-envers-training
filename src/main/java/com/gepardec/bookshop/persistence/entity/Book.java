@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.envers.AuditMappedBy;
 import org.hibernate.envers.Audited;
 
 @Entity
@@ -30,7 +31,6 @@ public class Book {
     private Integer publicationYear;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
     @JsonIgnore
     private Author author;
 

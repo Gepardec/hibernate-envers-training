@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 06
+      author: gepardec
+      changes:
+        - addColumn:
+            tableName: revision
+            columns:
+              - column:
+                  name: username
+                  type: varchar(64)
