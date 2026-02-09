@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
-class HistoryResourceTest {
+class AuthorHistoryResourceTest {
 
     @Nested
     class BookHistory {
