@@ -1,4 +1,4 @@
-package com.gepardec.bookshop.basic.basic01;
+package com.gepardec.bookshop.examples.example01;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

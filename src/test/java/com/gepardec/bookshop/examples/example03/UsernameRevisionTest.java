@@ -1,10 +1,11 @@
-package com.gepardec.bookshop.basic.basic06;
+package com.gepardec.bookshop.examples.example03;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.bookshop.persistence.entity.Author;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +13,13 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
-class SearchHistoryTest {
+class UsernameRevisionTest {
 
     @Inject
     ObjectMapper mapper;
 
     @Test
-    void shouldGetAuthorHistoryByUsername() throws JsonProcessingException {
+    void shouldSetUsername() throws JsonProcessingException {
         String username = "twoleftfeet";
 
         Author author = new Author();
@@ -26,7 +27,7 @@ class SearchHistoryTest {
         author.setEmail("hermann.hesse@gepardec.com");
         author.setInternalNotes("my notes.");
 
-        given()
+        long id = given()
                 .header("username", username)
                 .contentType(ContentType.JSON)
                 .body(mapper.writeValueAsString(author))
@@ -38,16 +39,15 @@ class SearchHistoryTest {
                 .jsonPath()
                 .getLong("id");
 
-        String retrievedUsername = given()
-                .when()
-                .get("history/author/username/%s".formatted(username))
+        JsonPath jsonPath = given()
+                .when().get("/history/author/%s/full".formatted(id))
                 .then()
                 .statusCode(200)
                 .extract()
-                .jsonPath()
-                .getString("[0].username");
+                .jsonPath();
 
-        assertThat(retrievedUsername)
+        String result = jsonPath.getString("[0].username");
+        assertThat(result)
                 .isNotNull()
                 .isEqualTo(username);
     }

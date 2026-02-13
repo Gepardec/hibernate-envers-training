@@ -1,4 +1,4 @@
-package com.gepardec.bookshop.basic.basic02;
+package com.gepardec.bookshop.examples.example02;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.path.json.JsonPath;

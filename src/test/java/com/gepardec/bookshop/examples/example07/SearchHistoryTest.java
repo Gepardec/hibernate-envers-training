@@ -1,11 +1,10 @@
-package com.gepardec.bookshop.basic.basic03;
+package com.gepardec.bookshop.examples.example07;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gepardec.bookshop.persistence.entity.Author;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +12,13 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
-class UsernameRevisionTest {
+class SearchHistoryTest {
 
     @Inject
     ObjectMapper mapper;
 
     @Test
-    void shouldSetUsername() throws JsonProcessingException {
+    void shouldGetAuthorHistoryByUsername() throws JsonProcessingException {
         String username = "twoleftfeet";
 
         Author author = new Author();
@@ -27,7 +26,7 @@ class UsernameRevisionTest {
         author.setEmail("hermann.hesse@gepardec.com");
         author.setInternalNotes("my notes.");
 
-        long id = given()
+        given()
                 .header("username", username)
                 .contentType(ContentType.JSON)
                 .body(mapper.writeValueAsString(author))
@@ -39,15 +38,16 @@ class UsernameRevisionTest {
                 .jsonPath()
                 .getLong("id");
 
-        JsonPath jsonPath = given()
-                .when().get("/history/author/%s/full".formatted(id))
+        String retrievedUsername = given()
+                .when()
+                .get("history/author/username/%s".formatted(username))
                 .then()
                 .statusCode(200)
                 .extract()
-                .jsonPath();
+                .jsonPath()
+                .getString("[0].username");
 
-        String result = jsonPath.getString("[0].username");
-        assertThat(result)
+        assertThat(retrievedUsername)
                 .isNotNull()
                 .isEqualTo(username);
     }
