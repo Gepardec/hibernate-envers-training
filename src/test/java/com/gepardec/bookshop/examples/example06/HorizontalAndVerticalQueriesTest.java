@@ -1,4 +1,4 @@
-package com.gepardec.bookshop.basic.basic05;
+package com.gepardec.bookshop.examples.example06;
 
 import com.gepardec.bookshop.rest.dto.AuthorRevisionDto;
 import io.quarkus.test.junit.QuarkusTest;

@@ -45,4 +45,16 @@ public class BookHistoryResource {
     public List<Book> getByTimestamp(@PathParam("timestamp") Instant timestamp) {
         return bookHistoryRepository.getByTimestamp(timestamp);
     }
+
+    @GET
+    @Path("title/{title}")
+    public List<Book> getByTitle(@PathParam("title") String title) {
+        return bookHistoryRepository.getByTitle(title);
+    }
+
+    @GET
+    @Path("title/{title}/ordered")
+    public List<Book> getByTitleOrdered(@PathParam("title") String title) {
+        return bookHistoryRepository.getByTitleOrderByPublicationYear(title);
+    }
 }
