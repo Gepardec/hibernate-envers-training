@@ -151,9 +151,95 @@ Store full entity state on delete.
 
 ---
 
-# 📊 Exercise 05 — Horizontal & Vertical Queries
+# 🔎 Exercise 05 — Advanced Property Queries
 
-**Test class:** `example05/HorizontalAndVerticalQueriesTest`
+**Test class:** `example05/QueriesTest`
+
+Now we introduce **property-based filtering** in audit queries.
+
+---
+
+## 📘 Scenario
+
+Two books are created:
+
+- `"Java fundamentals"` (1975)
+- `"New features - Java 25"` (2025)
+
+Both contain `"Java"` in the title.
+
+You must implement history queries that:
+
+1. Filter by **title substring**
+2. Return audited data
+3. Support ordering
+
+---
+
+## 🎯 Goal — Part A
+
+Implement:
+
+```
+GET /history/book/title/{title}
+```
+
+### ✅ Acceptance Criteria
+
+For:
+
+```
+GET /history/book/title/Java
+```
+
+- Response status is `200`
+- Exactly **2 books** are returned
+- Every book title contains `"Java"`
+
+---
+
+## 🎯 Goal — Part B
+
+Implement:
+
+```
+GET /history/book/title/{title}/ordered
+```
+
+### ✅ Acceptance Criteria
+
+For:
+
+```
+GET /history/book/title/Java/ordered
+```
+
+- First result has `publicationYear == 2025`
+- Second result has `publicationYear == 1975`
+
+---
+
+## ❓ Open Questions
+
+- How do you filter audited entities by property values?
+- How do you apply ordering in an Envers audit query?
+- Are you querying current state or historical snapshots?
+- Should you use projection or return full entity snapshots?
+
+---
+
+## 💡 Answers
+
+- Use the **Envers AuditReader query API** with `AuditEntity.property("title").like(...)`.
+- Apply ordering using `addOrder(AuditEntity.property("publicationYear").desc())`.
+- You are querying **historical snapshots**, not the live entity table.
+- Return full entity snapshots unless projection is explicitly required.
+
+---
+
+# 📊 Exercise 06 — Horizontal & Vertical Queries
+
+**Test class:** `example06/HorizontalAndVerticalQueriesTest`
 
 ---
 
@@ -195,9 +281,9 @@ Order: `DEL > MOD > ADD`
 
 ---
 
-# 🔎 Exercise 06 — Search history by username
+# 🔎 Exercise 07 — Search history by username
 
-**Test class:** `example06/SearchHistoryTest`
+**Test class:** `example07/SearchHistoryTest`
 
 **Endpoint:** `GET /history/author/username/{username}`
 
