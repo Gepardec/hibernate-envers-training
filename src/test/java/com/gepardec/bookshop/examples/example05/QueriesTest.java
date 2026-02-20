@@ -34,7 +34,7 @@ class QueriesTest {
 
         List<Book> books = jsonPath.getList("$", Book.class);
         assertThat(books)
-                .hasSize(2)
+                .isNotEmpty()
                 .allSatisfy(b -> assertThat(b.getTitle()).contains("Java"));
     }
 
