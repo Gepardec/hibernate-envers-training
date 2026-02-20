@@ -1,7 +1,6 @@
 package com.gepardec.bookshop.persistence.repository;
 
 import com.gepardec.bookshop.persistence.entity.Author;
-import com.gepardec.bookshop.persistence.entity.Book;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

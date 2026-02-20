@@ -8,14 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import java.util.List;
 
 @Entity
 @Table(name = "author")
-@Audited
 public class Author {
 
     @Id
@@ -31,7 +28,6 @@ public class Author {
     private List<Book> books;
 
     @Column(name = "internal_notes")
-    @NotAudited
     private String internalNotes;
 
     public Long getId() {

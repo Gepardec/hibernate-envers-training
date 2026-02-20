@@ -10,8 +10,6 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
-import org.hibernate.envers.query.AuditQuery;
-import org.hibernate.envers.query.criteria.MatchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +53,7 @@ public class AuthorHistoryRepository {
                             author.getName(),
                             rev.getId(),           // Revision Number
                             rev.getTimestamp(),
-                            rev.getUsername(),
+                            // TODO 3: add username
                             revType
                     );
                 })
@@ -64,52 +62,18 @@ public class AuthorHistoryRepository {
 
     @SuppressWarnings("unchecked")
     public List<AuthorRevisionDto> findRevisionsByUser(String username) {
-        List<Object[]> results = auditReader()
-                .createQuery()
-                .forRevisionsOfEntity(Author.class, false, false)
-                .add(AuditEntity.revisionProperty("username").eq(username))
-                .getResultList();
+        // TODO 7: create author query
 
         List<AuthorRevisionDto> revisions = new ArrayList<>();
-        for (Object[] row : results) {
-            Author author = (Author) row[0];
-            Revision rev = (Revision) row[1];
-            RevisionType type = (RevisionType) row[2];
-            revisions.add(new AuthorRevisionDto(
-                    author.getId(),
-                    author.getName(),
-                    rev.getId(),
-                    rev.getTimestamp(),
-                    rev.getUsername(),
-                    type
-            ));
-        }
+        // TODO 7: create AuthorRevisionDto
 
         return revisions;
     }
 
     @SuppressWarnings("unchecked")
     public List<AuthorRevisionDto> findRevisionsByName(String authorName) {
-        AuditQuery query = auditReader().createQuery().forRevisionsOfEntity(Author.class, false, true);
-        List<Object[]> rows = query.add(AuditEntity.property("name").ilike(authorName, MatchMode.ANYWHERE))
-                .addOrder(AuditEntity.revisionType().desc())
-                .getResultList();
+        // TODO 6: create vertical author name query
 
-        return rows.stream()
-                .map(row -> {
-                    Author author = (Author) row[0];
-                    Revision rev = (Revision) row[1];
-                    RevisionType revType = (RevisionType) row[2];
-
-                    return new AuthorRevisionDto(
-                            author.getId(),
-                            author.getName(),
-                            rev.getId(),
-                            rev.getTimestamp(),
-                            rev.getUsername(),
-                            revType
-                    );
-                })
-                .toList();
+        return null;
     }
 }

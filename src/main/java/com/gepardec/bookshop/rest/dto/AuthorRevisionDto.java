@@ -7,7 +7,7 @@ public record AuthorRevisionDto(
         String name,
         int revisionId,
         long revisionTimestamp,
-        String username,
+        // TODO 3: add username
         RevisionType revisionType
 ) {
 }

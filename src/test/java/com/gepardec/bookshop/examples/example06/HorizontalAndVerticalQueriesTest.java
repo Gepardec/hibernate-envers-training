@@ -52,7 +52,7 @@ class HorizontalAndVerticalQueriesTest {
     class VerticalQuery {
 
         @Test
-        public void findAuthorRevisionsByName() {
+        void findAuthorRevisionsByName() {
             given()
                     .when()
                     .delete("/author/1")
