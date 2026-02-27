@@ -77,7 +77,7 @@ Enable auditing so history endpoints return audit entries.
 
 ## 💡 Answers
 
-- Envers is **opt-in** to avoid storage overhead and unintended auditing of sensitive data.
+- Envers is optional to avoid storage overhead and unintended auditing of sensitive data. -> Security and Storage
 - Entities must be explicitly marked/configured for auditing. Once enabled, INSERT, UPDATE, DELETE are tracked.
 - Envers generates audit tables (`*_AUD`) plus a revision table automatically during schema generation.
 
@@ -118,14 +118,12 @@ Persist `username` in revision metadata.
 - What is a revision entity?
 - When is a revision created?
 - How do you safely pass request information?
-- What about async contexts?
 
 ## 💡 Answers
 
 - A revision entity stores revision metadata (revision number, timestamp, custom fields like username).
 - Revisions are created when a transaction modifying audited entities is flushed/committed.
 - Capture header in a request filter, store temporarily (e.g., ThreadLocal), read it in a revision listener, and clear it afterwards.
-- Async execution requires explicit context propagation; ThreadLocal alone may not work.
 
 ---
 
@@ -251,13 +249,11 @@ GET /history/book/title/Java/ordered
 
 - How do you map a timestamp to a revision?
 - Does Envers query by revision number or date?
-- How precise is timestamp mapping?
 
 ## 💡 Answers
 
 - Resolve timestamp to revision number, then query entity state at that revision.
 - Internally Envers queries by revision number.
-- Precision depends on revision timestamp resolution and database precision.
 
 ---
 
@@ -269,13 +265,11 @@ Order: `DEL > MOD > ADD`
 
 ## ❓ Open Questions
 
-- How do you filter by entity properties?
 - How do you include revision metadata?
 - Where does revision type come from?
 
 ## 💡 Answers
 
-- Use Envers audit query API with property constraints.
 - Use query mode returning entity + revision entity + revision type.
 - Revision type (ADD, MOD, DEL) is provided by Envers automatically.
 
@@ -289,13 +283,11 @@ Order: `DEL > MOD > ADD`
 
 ## ❓ Open Questions
 
-- How do you query by revision entity properties?
 - How are revision and entity data joined?
 - Difference between entity and revision constraints?
 
 ## 💡 Answers
 
-- Include revision entity in audit query and filter by `revision.username`.
 - Audit tables contain a revision foreign key referencing the revision table.
 - Entity constraints filter snapshot data; revision constraints filter metadata (username, timestamp, revision number).
 
