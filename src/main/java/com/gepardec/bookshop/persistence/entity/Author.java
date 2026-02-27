@@ -1,5 +1,6 @@
 package com.gepardec.bookshop.persistence.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,14 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import java.util.List;
 
 @Entity
 @Table(name = "author")
-@Audited
 public class Author {
 
     @Id
@@ -26,11 +24,10 @@ public class Author {
 
     private String email;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Book> books;
 
     @Column(name = "internal_notes")
-    @NotAudited
     private String internalNotes;
 
     public Long getId() {

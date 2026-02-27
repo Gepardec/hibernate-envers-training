@@ -16,9 +16,6 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
-              - column:
-                  name: username
-                  type: varchar(256)
         - createSequence:
             sequenceName: revision_seq
             startValue: 1

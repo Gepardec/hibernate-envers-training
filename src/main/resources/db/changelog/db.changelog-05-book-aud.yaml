@@ -14,7 +14,7 @@ databaseChangeLog:
                   type: int
                   constraints:
                     referencedTableName: REVISION
-                    foreignKeyName: FK_AUTHOR_AUD_REVISION
+                    foreignKeyName: fk_book_aud_revision
                     referencedColumnNames: id
                     nullable: false
               - column:
@@ -32,6 +32,11 @@ databaseChangeLog:
               - column:
                   name: author_id
                   type: BIGINT
+
+        - addPrimaryKey:
+            tableName: book_aud
+            columnNames: id, revision
+            constraintName: pk_book_aud
 
         - addForeignKeyConstraint:
             baseTableName: book_aud

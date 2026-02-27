@@ -1,12 +1,13 @@
 package com.gepardec.bookshop.persistence.listener;
 
+// TODO 3: use it!
 public class UsernameHolder {
+
+    private static final ThreadLocal<String> USER = new ThreadLocal<>();
 
     private UsernameHolder() {
         // nop
     }
-
-    private static final ThreadLocal<String> USER = new ThreadLocal<>();
 
     public static void set(String username) {
         USER.set(username);

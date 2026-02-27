@@ -28,4 +28,12 @@ public class AuthorRepository {
         return em.createQuery("select a from Author a", Author.class)
                 .getResultList();
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+        }
+    }
 }

@@ -1,7 +1,6 @@
-package com.gepardec.bookshop.persistence.repository;
+package com.gepardec.bookshop.persistence.repository.history;
 
 import com.gepardec.bookshop.persistence.entity.Author;
-import com.gepardec.bookshop.persistence.entity.Book;
 import com.gepardec.bookshop.persistence.entity.Revision;
 import com.gepardec.bookshop.rest.dto.AuthorRevisionDto;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -12,10 +11,11 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class HistoryRepository {
+public class AuthorHistoryRepository {
 
     @Inject
     EntityManager em;
@@ -24,15 +24,7 @@ public class HistoryRepository {
         return AuditReaderFactory.get(em);
     }
 
-    public List<Book> getBookHistory(Long bookId) {
-        List<Number> revs = auditReader().getRevisions(Book.class, bookId);
-
-        return revs.stream()
-                .map(rev -> auditReader().find(Book.class, bookId, rev))
-                .toList();
-    }
-
-    public List<Author> getAuthorHistory(Long authorId) {
+    public List<Author> getHistory(Long authorId) {
         AuditReader auditReader = AuditReaderFactory.get(em);
 
         List<Number> revisions = auditReader.getRevisions(Author.class, authorId);
@@ -42,9 +34,8 @@ public class HistoryRepository {
                 .toList();
     }
 
-    public List<AuthorRevisionDto> getAuthorHistoryFull(Long authorId) {
-
-
+    @SuppressWarnings("unchecked")
+    public List<AuthorRevisionDto> getWithRevisions(Long authorId) {
         List<Object[]> rows = auditReader().createQuery()
                 .forRevisionsOfEntity(Author.class, false, true)
                 .add(AuditEntity.id().eq(authorId))
@@ -62,18 +53,27 @@ public class HistoryRepository {
                             author.getName(),
                             rev.getId(),           // Revision Number
                             rev.getTimestamp(),
-                            rev.getUsername(),
+                            // TODO 3: add username
                             revType
                     );
                 })
                 .toList();
     }
 
-    public List<Author> findAuthorRevisionsByUser(String username) {
-        return auditReader()
-                .createQuery()
-                .forRevisionsOfEntity(Author.class, false, true)
-                .add(AuditEntity.revisionProperty("username").eq(username))
-                .getResultList();
+    @SuppressWarnings("unchecked")
+    public List<AuthorRevisionDto> findRevisionsByUser(String username) {
+        // TODO 7: create author query
+
+        List<AuthorRevisionDto> revisions = new ArrayList<>();
+        // TODO 7: create AuthorRevisionDto
+
+        return revisions;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<AuthorRevisionDto> findRevisionsByName(String authorName) {
+        // TODO 6: create vertical author name query
+
+        return null;
     }
 }

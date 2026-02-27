@@ -12,10 +12,6 @@ public class UsernameRequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext ctx) {
-        String username = ctx.getHeaderString("username");
-        if (username == null) {
-            username = "unknown";
-        }
-        UsernameHolder.set(username);
+        // TODO 3: set username from header "username"
     }
 }
