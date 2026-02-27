@@ -24,7 +24,7 @@ You are not just reading history — you are **writing it**.
 
 ## 🧰 Prerequisites
 
-- ☕ Java 21
+- ☕ Java 17
 - 📦 Maven
 - 🐳 Docker + Docker Compose
 
