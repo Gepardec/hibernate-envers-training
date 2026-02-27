@@ -75,12 +75,6 @@ Enable auditing so history endpoints return audit entries.
 - What qualifies an entity for auditing?
 - Where do audit tables come from?
 
-## 💡 Answers
-
-- Envers is **opt-in** to avoid storage overhead and unintended auditing of sensitive data.
-- Entities must be explicitly marked/configured for auditing. Once enabled, INSERT, UPDATE, DELETE are tracked.
-- Envers generates audit tables (`*_AUD`) plus a revision table automatically during schema generation.
-
 ---
 
 # 🔐 Exercise 02 — Exclude a field from auditing
@@ -96,12 +90,6 @@ Exclude `internalNotes` from auditing.
 - Can you audit an entity but ignore specific attributes?
 - What happens to schema generation when excluding a field?
 - Does “not audited” mean “not stored anywhere”?
-
-## 💡 Answers
-
-- Yes. Individual properties can be excluded while auditing the rest of the entity.
-- The excluded field will not appear in the audit table schema.
-- The field remains stored in the main entity table — it is just not versioned.
 
 ---
 
@@ -120,13 +108,6 @@ Persist `username` in revision metadata.
 - How do you safely pass request information?
 - What about async contexts?
 
-## 💡 Answers
-
-- A revision entity stores revision metadata (revision number, timestamp, custom fields like username).
-- Revisions are created when a transaction modifying audited entities is flushed/committed.
-- Capture header in a request filter, store temporarily (e.g., ThreadLocal), read it in a revision listener, and clear it afterwards.
-- Async execution requires explicit context propagation; ThreadLocal alone may not work.
-
 ---
 
 # 🗑 Exercise 04 — Keep entity state on delete
@@ -142,12 +123,6 @@ Store full entity state on delete.
 - Does Envers store delete state by default?
 - Is this configuration-based?
 - What are the trade-offs?
-
-## 💡 Answers
-
-- Not always fully — depends on configuration.
-- Yes, Envers provides a configuration option to store entity data on delete.
-- Trade-off: more storage usage vs. more complete historical records.
 
 ---
 
@@ -228,15 +203,6 @@ GET /history/book/title/Java/ordered
 
 ---
 
-## 💡 Answers
-
-- Use the **Envers AuditReader query API** with `AuditEntity.property("title").like(...)`.
-- Apply ordering using `addOrder(AuditEntity.property("publicationYear").desc())`.
-- You are querying **historical snapshots**, not the live entity table.
-- Return full entity snapshots unless projection is explicitly required.
-
----
-
 # 📊 Exercise 06 — Horizontal & Vertical Queries
 
 **Test class:** `example06/HorizontalAndVerticalQueriesTest`
@@ -253,12 +219,6 @@ GET /history/book/title/Java/ordered
 - Does Envers query by revision number or date?
 - How precise is timestamp mapping?
 
-## 💡 Answers
-
-- Resolve timestamp to revision number, then query entity state at that revision.
-- Internally Envers queries by revision number.
-- Precision depends on revision timestamp resolution and database precision.
-
 ---
 
 ## 📈 Part B — Vertical Query
@@ -273,12 +233,6 @@ Order: `DEL > MOD > ADD`
 - How do you include revision metadata?
 - Where does revision type come from?
 
-## 💡 Answers
-
-- Use Envers audit query API with property constraints.
-- Use query mode returning entity + revision entity + revision type.
-- Revision type (ADD, MOD, DEL) is provided by Envers automatically.
-
 ---
 
 # 🔎 Exercise 07 — Search history by username
@@ -292,12 +246,6 @@ Order: `DEL > MOD > ADD`
 - How do you query by revision entity properties?
 - How are revision and entity data joined?
 - Difference between entity and revision constraints?
-
-## 💡 Answers
-
-- Include revision entity in audit query and filter by `revision.username`.
-- Audit tables contain a revision foreign key referencing the revision table.
-- Entity constraints filter snapshot data; revision constraints filter metadata (username, timestamp, revision number).
 
 ---
 
