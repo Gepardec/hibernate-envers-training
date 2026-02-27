@@ -106,7 +106,6 @@ Persist `username` in revision metadata.
 - What is a revision entity?
 - When is a revision created?
 - How do you safely pass request information?
-- What about async contexts?
 
 ---
 
@@ -217,7 +216,6 @@ GET /history/book/title/Java/ordered
 
 - How do you map a timestamp to a revision?
 - Does Envers query by revision number or date?
-- How precise is timestamp mapping?
 
 ---
 
@@ -229,7 +227,6 @@ Order: `DEL > MOD > ADD`
 
 ## ❓ Open Questions
 
-- How do you filter by entity properties?
 - How do you include revision metadata?
 - Where does revision type come from?
 
@@ -243,7 +240,6 @@ Order: `DEL > MOD > ADD`
 
 ## ❓ Open Questions
 
-- How do you query by revision entity properties?
 - How are revision and entity data joined?
 - Difference between entity and revision constraints?
 
