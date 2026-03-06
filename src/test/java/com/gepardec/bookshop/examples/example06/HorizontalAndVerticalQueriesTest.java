@@ -1,5 +1,6 @@
 package com.gepardec.bookshop.examples.example06;
 
+import com.gepardec.bookshop.persistence.entity.Book;
 import com.gepardec.bookshop.rest.dto.AuthorRevisionDto;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.path.json.JsonPath;
@@ -43,8 +44,8 @@ class HorizontalAndVerticalQueriesTest {
                     .extract()
                     .jsonPath();
 
-            int id = jsonPath.getInt("[0].id");
-            assertThat(id).isEqualTo(1);
+            List<Book> books = jsonPath.getList("$", Book.class);
+            assertThat(books).hasSize(2);
         }
     }
 
